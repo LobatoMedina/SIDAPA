@@ -1,0 +1,37 @@
+/src/Ubam.Evolution.Presentation/appsettings.Development.json
+/src/Ubam.Evolution.Presentation/appsettings.Production.json
+/src/Ubam.Evolution.Presentation/appsettings.json
+
+# Build outputs
+bin/
+obj/
+out/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# Visual Studio Code
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+
+# Logs
+logs/
+*.log
+
+# Cache directories
+.cache/
+/Ubam.Evolution.sln
+/tests/Ubam.Evolution.Infrastructure.Tests/Ubam.Evolution.Infrastructure.Tests.csproj
+/src/Ubam.Online.Presentation/appsettings.json
