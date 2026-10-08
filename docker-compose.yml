@@ -1,0 +1,56 @@
+services:
+  sidapa.presentation:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sidapa-presentation:latest
+    container_name: sidapa-presentation
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      # user-secrets solo se cargan automáticamente en Development.
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+    volumes:
+      # Monta el secrets.json generado por `dotnet user-secrets` en la ruta
+      # donde ASP.NET Core lo busca dentro del contenedor (solo lectura).
+      # La credencial de la base de datos NUNCA se copia a la imagen ni al repo.
+      #
+      # Windows (PowerShell/cmd):  %APPDATA%\Microsoft\UserSecrets\a87d2ab8-687e-416b-8e17-e16004650713\secrets.json
+      # Linux/macOS:               ~/.microsoft/usersecrets/a87d2ab8-687e-416b-8e17-e16004650713/secrets.json
+      - ${APPDATA}/Microsoft/UserSecrets/a87d2ab8-687e-416b-8e17-e16004650713/secrets.json:/root/.microsoft/usersecrets/a87d2ab8-687e-416b-8e17-e16004650713/secrets.json:ro
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - sidapa-network
+
+  db:
+    image: postgres:16-alpine
+    container_name: sidapa-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    volumes:
+      # Volumen nombrado: persiste los datos de PostgreSQL fuera del
+      # ciclo de vida del contenedor (sobrevive a `docker compose down`).
+      - sidapa-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - sidapa-network
+
+volumes:
+  sidapa-pgdata:
+
+networks:
+  sidapa-network:
+    driver: bridge
