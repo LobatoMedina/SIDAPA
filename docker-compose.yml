@@ -13,6 +13,7 @@ services:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
       TaxScan__BaseUrl: http://reader:8000
+      Jwt__Key: ${JWT_KEY}
     volumes:
       # Monta el secrets.json generado por `dotnet user-secrets` en la ruta
       # donde ASP.NET Core lo busca dentro del contenedor (solo lectura).

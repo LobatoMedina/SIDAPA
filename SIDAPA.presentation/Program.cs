@@ -1,4 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;            
+using Microsoft.IdentityModel.Tokens;                           
 using SIDAPA.infraestructure;
+using SIDAPA.infraestructure.Security;                          
+using SIDAPA.presentation.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,10 +26,42 @@ if (string.IsNullOrWhiteSpace(readerBaseUrl))
     throw new InvalidOperationException("Missing 'TaxScan:BaseUrl' in configuration.");
 }
 
-builder.Services.AddInfraestructure(connectionString, readerBaseUrl);
+var jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>() ?? new JwtOptions();     
+
+if (jwt.Key.Length < 32)                                                                      
+    throw new InvalidOperationException("Missing or short 'Jwt:Key' (min 32 chars). Set it with dotnet user-secrets.");
+builder.Services.AddInfraestructure(connectionString, readerBaseUrl, jwt);                   
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.MapInboundClaims = false;   // conserva los nombres cortos: sub, name, role
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwt.Issuer,
+            ValidAudience = jwt.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
+            ClockSkew = TimeSpan.FromMinutes(1),
+            NameClaimType = "name",
+            RoleClaimType = "role"          // para que [Authorize(Roles = "Glosador")] funcione
+        };
+        options.Events = new JwtBearerEvents
+        {
+            // el token viene en la cookie, no en el encabezado Authorization
+            OnMessageReceived = ctx =>
+            {
+                if (string.IsNullOrEmpty(ctx.Request.Headers.Authorization))
+                    ctx.Token = ctx.Request.Cookies[AuthCookie.Name];
+                return Task.CompletedTask;
+            }
+        };
+    });
 
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
