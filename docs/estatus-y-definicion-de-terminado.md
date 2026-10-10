@@ -88,19 +88,3 @@ Cada cambio de estatus se guarda en la tabla `ope_bitacora_estatus` (`StatusHist
 
 ---
 
-## 3. Definición de Terminado
-
-Una tarea o historia de usuario solo se mueve a **Done** en Trello cuando cumple **todo** lo siguiente:
-
-- [ ] Se cumplen todos los pasos de su prueba de aceptación usando datos de prueba reales (facturas de la carpeta de anexos).
-- [ ] La probó una persona distinta a quien la programó y dejó evidencia (captura de pantalla o video corto).
-- [ ] El código está en la rama `dev` del repositorio y el sistema levanta con Docker sin pasos manuales.
-- [ ] Si se crearon o cambiaron tablas, el diccionario de datos y el modelo entidad-relación están actualizados (y existe su migración).
-- [ ] Los mensajes de error están en español claro, sin códigos técnicos para el usuario.
-- [ ] Se mostró funcionando en la revisión (demo) del final del sprint.
-
-Las tareas técnicas que no tienen pantalla (por ejemplo, configuración o base de datos) cumplen el primer punto con una prueba que demuestre que funcionan (comando, consulta o prueba automática) y su evidencia.
-
----
-
-*Acordado por el equipo: Irvin Márquez, Lobato Medina y Armando.*
