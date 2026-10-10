@@ -1,7 +1,19 @@
+using SIDAPA.infraestructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container. MVC with classic .cshtml Razor views (no Blazor / Razor Components).
 builder.Services.AddControllersWithViews();
+
+// Database (PostgreSQL + EF Core). The connection string is NOT stored in appsettings.json:
+// set it with `dotnet user-secrets set "ConnectionStrings:DefaultConnection" "<value>"`.
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (string.IsNullOrWhiteSpace(connectionString))
+{
+    throw new InvalidOperationException(
+        "Missing connection string 'ConnectionStrings:DefaultConnection'. Configure it with dotnet user-secrets.");
+}
+builder.Services.AddInfraestructure(connectionString);
 
 var app = builder.Build();
 

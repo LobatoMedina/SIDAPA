@@ -1,7 +1,12 @@
 namespace SIDAPA.domain.Entities.Core.Catalogs;
 
+/// <summary>
+/// Tabla <c>cat_rol</c>: Roles del sistema. (Origen: Sistema)
+/// </summary>
 public class RoleEntity
 {
-    public int Id { get; set; }
-    public string Role_Role { get; set; }
+    /// <summary>Identificador.</summary>
+    public short Id { get; set; }
+    /// <summary>Cliente, Capturador, Glosador o Administrador.</summary>
+    public string Name { get; set; } = null!;
 }
