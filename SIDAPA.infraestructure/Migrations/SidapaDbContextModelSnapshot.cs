@@ -148,6 +148,98 @@ namespace SIDAPA.infraestructure.Migrations
                         .HasDatabaseName("uq_cat_estatus_1");
 
                     b.ToTable("cat_estatus", "sidapa");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = (short)1,
+                            Name = "Recibida",
+                            SortOrder = (short)1
+                        },
+                        new
+                        {
+                            Id = (short)2,
+                            Name = "En revisión",
+                            SortOrder = (short)2
+                        },
+                        new
+                        {
+                            Id = (short)3,
+                            Name = "En espera de documentos",
+                            SortOrder = (short)3
+                        },
+                        new
+                        {
+                            Id = (short)4,
+                            Name = "Expediente completo",
+                            SortOrder = (short)4
+                        },
+                        new
+                        {
+                            Id = (short)5,
+                            Name = "Factura leída",
+                            SortOrder = (short)5
+                        },
+                        new
+                        {
+                            Id = (short)6,
+                            Name = "Factura confirmada",
+                            SortOrder = (short)6
+                        },
+                        new
+                        {
+                            Id = (short)7,
+                            Name = "En clasificación",
+                            SortOrder = (short)7
+                        },
+                        new
+                        {
+                            Id = (short)8,
+                            Name = "Borrador de pedimento",
+                            SortOrder = (short)8
+                        },
+                        new
+                        {
+                            Id = (short)9,
+                            Name = "En glosa",
+                            SortOrder = (short)9
+                        },
+                        new
+                        {
+                            Id = (short)10,
+                            Name = "Con anotaciones",
+                            SortOrder = (short)10
+                        },
+                        new
+                        {
+                            Id = (short)11,
+                            Name = "Glosado (Vo.Bo.)",
+                            SortOrder = (short)11
+                        },
+                        new
+                        {
+                            Id = (short)12,
+                            Name = "Archivo generado",
+                            SortOrder = (short)12
+                        },
+                        new
+                        {
+                            Id = (short)13,
+                            Name = "Rechazado por validador",
+                            SortOrder = (short)13
+                        },
+                        new
+                        {
+                            Id = (short)14,
+                            Name = "Validado",
+                            SortOrder = (short)14
+                        },
+                        new
+                        {
+                            Id = (short)15,
+                            Name = "Cerrado",
+                            SortOrder = (short)15
+                        });
                 });
 
             modelBuilder.Entity("SIDAPA.domain.Entities.Core.Catalogs.SystemParameterEntity", b =>
