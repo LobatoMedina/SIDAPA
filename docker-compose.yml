@@ -12,6 +12,7 @@ services:
       # user-secrets solo se cargan automáticamente en Development.
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://+:8080
+      TaxScan__BaseUrl: http://reader:8000
     volumes:
       # Monta el secrets.json generado por `dotnet user-secrets` en la ruta
       # donde ASP.NET Core lo busca dentro del contenedor (solo lectura).
@@ -45,6 +46,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - sidapa-network
+  reader:
+    build: ../sidapa-reader
+    image: sidapa-reader:latest
+    container_name: sidapa-reader
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
     networks:
       - sidapa-network
 

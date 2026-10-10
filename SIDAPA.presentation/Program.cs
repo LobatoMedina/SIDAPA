@@ -13,7 +13,15 @@ if (string.IsNullOrWhiteSpace(connectionString))
     throw new InvalidOperationException(
         "Missing connection string 'ConnectionStrings:DefaultConnection'. Configure it with dotnet user-secrets.");
 }
-builder.Services.AddInfraestructure(connectionString);
+
+// Document reader (sidapa-reader, Python/FastAPI). Local: http://localhost:8000 · Docker: http://reader:8000
+var readerBaseUrl = builder.Configuration["TaxScan:BaseUrl"];
+if (string.IsNullOrWhiteSpace(readerBaseUrl))
+{
+    throw new InvalidOperationException("Missing 'TaxScan:BaseUrl' in configuration.");
+}
+
+builder.Services.AddInfraestructure(connectionString, readerBaseUrl);
 
 var app = builder.Build();
 
