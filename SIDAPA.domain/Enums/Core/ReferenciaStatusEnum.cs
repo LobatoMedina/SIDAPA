@@ -1,0 +1,20 @@
+namespace SIDAPA.domain.Enums.Core;
+
+public enum ReferenciaStatusEnum : short
+{
+    RECIBIDA = 1,
+    EN_REVISION = 2,
+    EN_ESPERA_DE_DOCUMENTOS = 3,
+    EXPEDIENTE_COMPLETO = 4,
+    FACTURA_LEIDA = 5,
+    FACTURA_CONFIRMADA = 6,
+    EN_CLASIFICACION = 7,
+    BORRADOR_DE_PEDIMENTO = 8,
+    EN_GLOSA = 9,
+    CON_ANOTACIONES = 10,
+    GLOSADO = 11,
+    ARCHIVO_GENERADO = 12,
+    RECHAZADO_POR_VALIDADOR = 13,
+    VALIDADO = 14,
+    CERRADO = 15
+}
