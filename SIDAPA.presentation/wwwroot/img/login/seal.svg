@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Sello aduanal. -->
+  <g transform="translate(33 33) scale(0.34)" fill="none" stroke="#1f3b57" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <circle cx="50" cy="50" r="44"/>
+    <circle cx="50" cy="50" r="34" stroke-dasharray="4 5"/>
+    <path d="M50 30l6 13 14 1-11 9 4 14-13-8-13 8 4-14-11-9 14-1z"/>
+  </g>
+</svg>

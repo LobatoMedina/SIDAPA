@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Camión de carga. -->
+  <g transform="translate(33 33) scale(0.34)" fill="none" stroke="#1f3b57" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="2" y="24" width="60" height="44" rx="2"/>
+    <path d="M62 38h18l14 16v14H62z"/>
+    <path d="M70 42v12h20"/>
+    <circle cx="18" cy="76" r="7"/>
+    <circle cx="36" cy="76" r="7"/>
+    <circle cx="80" cy="76" r="7"/>
+  </g>
+</svg>
