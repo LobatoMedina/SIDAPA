@@ -39,3 +39,6 @@ logs/
 /Ubam.Evolution.sln
 /tests/Ubam.Evolution.Infrastructure.Tests/Ubam.Evolution.Infrastructure.Tests.csproj
 /src/Ubam.Online.Presentation/appsettings.json
+
+# Pruebas locales con curl (pueden traer tokens)
+cookies.txt
