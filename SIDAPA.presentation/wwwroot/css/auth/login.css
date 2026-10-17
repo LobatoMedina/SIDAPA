@@ -1,10 +1,12 @@
-/* Pantalla de inicio de sesión. Bootstrap resuelve grid, formulario, botones y alertas;
-   aquí solo va lo que Bootstrap no tiene: fondo animado, botón circular y transición de salida. */
+/* Pantalla de inicio de sesión.
+   Bootstrap resuelve el acomodo y lo responsivo: en pantallas chicas solo se ve la tarjeta a todo
+   el ancho; desde lg aparece el fondo a la izquierda (col-lg-7 / col-lg-5). Por eso aquí no hay media queries.
+   Aquí solo va lo que Bootstrap no tiene: el fondo animado y el botón circular.
+   Colores y medidas salen de css/base/theme.css; nada en px ni colores directos. */
 
 .login-page {
-    --login-anim-ms: 600ms;
-    --login-tile: 260px;
-    background-color: #eef2f7;
+    --login-tile: clamp(10rem, 18vw, 16rem);   /* tamaño del patrón del fondo, crece con la pantalla */
+    background-color: var(--sidapa-color-background);
     overflow-x: clip;
 }
 
@@ -12,30 +14,29 @@
 .login-bg {
     position: relative;
     overflow: hidden;
-    background-color: #dde6f0;
+    background-color: var(--sidapa-color-background-alt);
 }
 
-/* Cada SVG trae su silueta centrada con margen; repetidos con el mismo periodo y desfasados
-   forman un patrón. La capa se mueve exactamente un periodo en diagonal, así el bucle no se nota. */
+/* Los SVG se usan como máscara: la forma la dan los SVG y el color sale de la paleta.
+   Repetidos con el mismo periodo y desfasados forman un patrón. La capa se mueve exactamente
+   un periodo en diagonal, así el bucle no se nota. */
 .login-bg__layer {
     position: absolute;
-    top: calc(-1 * var(--login-tile));
-    left: calc(-1 * var(--login-tile));
-    right: 0;
-    bottom: 0;
+    inset: calc(-1 * var(--login-tile)) 0 0 calc(-1 * var(--login-tile));
+    background-color: var(--sidapa-color-primary);
     opacity: .14;
-    background-image:
+    mask-image:
         url("../../img/login/container.svg"),
         url("../../img/login/box.svg"),
         url("../../img/login/truck.svg"),
         url("../../img/login/seal.svg");
-    background-size: var(--login-tile) var(--login-tile);
-    background-position:
+    mask-size: var(--login-tile) var(--login-tile);
+    mask-position:
         0 0,
         calc(var(--login-tile) / 2) 0,
         calc(var(--login-tile) / 4) calc(var(--login-tile) / 2),
         calc(var(--login-tile) * 3 / 4) calc(var(--login-tile) / 2);
-    background-repeat: repeat;
+    mask-repeat: repeat;
     animation: login-drift 40s linear infinite;
     will-change: transform;
 }
@@ -46,19 +47,8 @@
 }
 
 /* ---------- Tarjeta ---------- */
-.login-side {
-    position: relative;
-    z-index: 1; /* la tarjeta pasa por encima del fondo al deslizarse */
-}
-
 .login-stage {
-    position: relative;
-    max-width: 420px;
-}
-
-.login-card {
-    position: relative;
-    z-index: 2;
+    width: min(100%, var(--sidapa-form-width));
 }
 
 /* Botón circular montado a la mitad del borde izquierdo de la tarjeta. */
@@ -66,48 +56,23 @@
     position: absolute;
     top: 50%;
     left: 0;
-    width: 44px;
-    height: 44px;
+    width: var(--sidapa-control-size);
+    aspect-ratio: 1;
     padding: 0;
     transform: translate(-50%, -50%);
     font-size: 1.25rem;
     line-height: 1;
-    z-index: 3;
 }
 
-/* ---------- Transición de salida (solo con login correcto) ---------- */
-.login-wipe {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background-color: #fff;
-    visibility: hidden;
-}
-
-.login-stage.is-leaving .login-card {
-    animation: login-card-out var(--login-anim-ms) ease-in-out forwards;
-}
-
-.login-stage.is-leaving .login-wipe {
-    visibility: visible;
-    animation: login-wipe-in var(--login-anim-ms) ease-in-out forwards;
-}
-
-/* La tarjeta se va a la izquierda, sobre el fondo... */
-@keyframes login-card-out {
-    to { transform: translateX(-120%); }
-}
-
-/* ...y el panel blanco crece hacia la derecha hasta ocupar su lugar. */
-@keyframes login-wipe-in {
-    from { clip-path: inset(0 100% 0 0); }
-    to   { clip-path: inset(0 0 0 0); }
+/* Lista del resumen de errores sin viñetas. */
+.login-card .validation-summary-errors ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .login-bg__layer,
-    .login-stage.is-leaving .login-card,
-    .login-stage.is-leaving .login-wipe {
+    .login-bg__layer {
         animation: none;
     }
 }
