@@ -1,0 +1,57 @@
+@model LoginViewModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/auth/login.css" asp-append-version="true" />
+}
+
+@*
+    Sin JavaScript: el formulario hace un post normal. Si algo falla, el servidor vuelve a pintar
+    esta vista con el error (validaciones del modelo o DomainExceptionFilter).
+*@
+<main class="login-page container-fluid">
+    <div class="row min-vh-100">
+        @* Fondo decorativo: solo en pantallas grandes, sin interacción. *@
+        <div class="col-lg-7 d-none d-lg-block login-bg" aria-hidden="true">
+            <div class="login-bg__layer"></div>
+        </div>
+
+        <div class="col-12 col-lg-5 d-flex align-items-center justify-content-center px-4 py-5">
+            <div class="login-stage">
+                <div class="card login-card border-0 shadow rounded-4">
+                    <form asp-controller="Auth" asp-action="Login" method="post" class="card-body p-4 p-md-5" novalidate>
+                        @* Botón circular del wireframe: envía el mismo formulario. *@
+                        <button type="submit" class="login-arrow btn btn-light border shadow-sm rounded-circle"
+                                aria-label="Iniciar sesión">
+                            <span aria-hidden="true">&larr;</span>
+                        </button>
+
+                        <h1 class="h2 fw-bold text-center mb-4">SIDAPA</h1>
+
+                        @* Error general (credenciales incorrectas). Si no hay error, ASP.NET no pinta nada. *@
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control rounded-pill px-3" placeholder="Ingrese su correo"
+                                   autocomplete="username" inputmode="email" autofocus />
+                            <span asp-validation-for="Email" class="invalid-feedback d-block"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control rounded-pill px-3" placeholder="Ingrese su contraseña"
+                                   autocomplete="current-password" />
+                            <span asp-validation-for="Password" class="invalid-feedback d-block"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2">Iniciar sesión</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Contenedor marítimo. La silueta ocupa el centro (34 %) para dejar margen en el patrón del fondo. -->
+  <g transform="translate(33 33) scale(0.34)" fill="none" stroke="#1f3b57" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <rect x="4" y="26" width="92" height="48" rx="2"/>
+    <path d="M18 32v36M30 32v36M42 32v36M54 32v36M66 32v36M78 32v36"/>
+    <path d="M4 32h8M88 32h8M4 68h8M88 68h8"/>
+  </g>
+</svg>

@@ -2,8 +2,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using SIDAPA.application.Interface;
 using SIDAPA.application.Interface.Core;
+using SIDAPA.application.Services.Core;
 using SIDAPA.infraestructure.ApiClients;
 using SIDAPA.infraestructure.Persistence;
+using SIDAPA.infraestructure.Repositories;
 using SIDAPA.infraestructure.Security;
 
 namespace SIDAPA.infraestructure;
@@ -25,6 +27,10 @@ public static class DependencyInjection
 
         services.AddSingleton(jwt);
         services.AddSingleton<ITokenService, JwtTokenService>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUserService, UserService>();
 
         return services;
     }

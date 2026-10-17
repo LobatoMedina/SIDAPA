@@ -2,6 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;            
 using Microsoft.IdentityModel.Tokens;                           
 using SIDAPA.infraestructure;
+using SIDAPA.infraestructure.Persistence.Seed;
 using SIDAPA.infraestructure.Security;                          
 using SIDAPA.presentation.Security;
 
@@ -47,7 +48,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Key)),
             ClockSkew = TimeSpan.FromMinutes(1),
             NameClaimType = "name",
-            RoleClaimType = "role"          // para que [Authorize(Roles = "Glosador")] funcione
+            RoleClaimType = "role"          // para que [Authorize(Roles = nameof(RolesEnum.GLOSADOR))] funcione
         };
         options.Events = new JwtBearerEvents
         {
@@ -62,6 +63,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
+
+// Roles (cat_rol) y, solo en Development, usuarios de prueba <rol>@sidapa.local.
+// La contraseña de prueba sale de user-secrets: dotnet user-secrets set "DevUsers:Password" "..."
+try
+{
+    var devUsersPassword = app.Environment.IsDevelopment() ? app.Configuration["DevUsers:Password"] : null;
+    await DatabaseSeeder.SeedAsync(app.Services, devUsersPassword);
+}
+catch (Exception ex)
+{
+    app.Logger.LogWarning(ex, "No se pudieron crear los datos iniciales. ¿Ya corriste las migraciones (dotnet ef database update)?");
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -74,6 +88,8 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseMiddleware<TokenRenewalMiddleware>();   // renueva el token a la mitad de su vida
 app.UseAuthorization();
 
 app.MapStaticAssets();
